@@ -1,5 +1,5 @@
 // 
-// blogPost.js
+// models/blogPost.js
 //
 const mongoose = require('mongoose');
 
@@ -12,6 +12,8 @@ const BlogPostSchema = new Schema({
         type: String,
         default: Date.now()
     }
+}, {
+    collection: 'dookie-kisses'
 });
 
 //Model

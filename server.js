@@ -12,7 +12,6 @@ const PORT = process.env.PORT || 8080;
 
 const routes = require('./routes/api')
 
-// const MONGODB_URI = 'mongodb+srv://admin:Oscysbtdel%241@cluster0-xicad.gcp.mongodb.net/test?retryWrites=true&w=majority'
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/gainzodb', {
     useNewUrlParser: true,
     useUnifiedTopology: true
