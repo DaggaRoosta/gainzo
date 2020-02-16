@@ -1,108 +1,41 @@
-// 
-// client/src/App.js
-// 
-import React from 'react';
-import axios from 'axios';
-import './App.css'
-class App extends React.Component {
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-  state = {
-    title: '',
-    body: '',
-    posts: []
-  };
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-  componentDidMount = () => {
-    this.getBlogPost();
-  }
+import CreateExercise from "./components/create-exercise.component";
+import EditExercise from "./components/edit-exercise.component";
+import ExerciseList from "./components/exercise-list.component";
 
-  getBlogPost = () => {
-    axios.get('/api')
-    .then((response) => {
-      const data = response.data;
-      this.setState({ posts: data });
-      console.log('Data has been retrieved');
-    })
-    .catch(() => {
-      alert('Error retrieving data')
-    })
-  }
+import logo from "./logo.svg";
 
-  handleChange = ({ target }) => {
-    const { name, value } = target;
-    this.setState({ [name]: value })
-  };
-
-  submit = (event) => {
-    event.preventDefault();
-    const payload = {
-      title: this.state.title,
-      body: this.state.body
-    };
-    axios({
-      url: '/api/save',
-      method: 'POST',
-      data: payload
-    })
-    .then(() => {
-      console.log('Data has been sent to the server')
-      this.resetUserInputs();
-      this.getBlogPost();
-    })
-    .catch(() => {
-      console.log('Error! Data has NOT been sent to the server')
-    });
-  };
-
-  resetUserInputs = () => {
-    this.setState({
-      title: '',
-      body: ''
-    });
-  };
-
-  displayBlogPost = (posts) => {
-    if (!posts.length) return null;
-    return posts.map((post, index) => (
-      <div key={index} className="blog-post_display">
-        <h3>{post.title}</h3>
-        <p>{post.body}</p>
-      </div>
-    ));
-  };
-
+class App extends Component {
   render() {
-    console.log('State: ', this.state)
-    // JSX
-    return(
-      <div className="app">
-        <h2>Welcome to Gainzo</h2>
-        <form onSubmit={this.submit}>
-          <div className="form-input">
-            <input
-              type="text"
-              name="title"
-              placeholder="Enter title here"
-              value={this.state.title}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div className="form-input">
-            <textarea 
-              name="body"
-              placeholder="Enter text here"
-              cols="30" 
-              rows="10"
-              value={this.state.body}
-              onChange={this.handleChange}
-              />
-          </div>
-          <button>Submit</button>
-        </form>
-        <div className="blog-post">
-          {this.displayBlogPost(this.state.posts)}
+    return (
+      <Router>
+        <div className="container">
+          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <a className="navbar-brand" href=".">
+              <img src={logo} width="30" height="30" alt="home" />
+            </a>
+            <Link to="/" className="navbar-brand">Workout Tracker</Link>
+            <div className="collpase navbar-collapse">
+              <ul className="navbar-nav mr-auto">
+                <li className="navbar-item">
+                  <Link to="/" className="nav-link">Exercises</Link>
+                </li>
+                <li className="navbar-item">
+                  <Link to="/create" className="nav-link">Create Exercise</Link>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <br/>
+          <Route path="/" exact component={ExerciseList} />
+          <Route path="/edit/:id" component={EditExercise} />
+          <Route path="/create" component={CreateExercise} />
         </div>
-      </div>
+      </Router>
     );
   }
 }

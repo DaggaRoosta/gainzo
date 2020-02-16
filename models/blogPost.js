@@ -2,9 +2,9 @@
 // models/blogPost.js
 //
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // Schema
-const Schema = mongoose.Schema;
 const BlogPostSchema = new Schema({
     title: String,
     body: String,

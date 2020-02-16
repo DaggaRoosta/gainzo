@@ -6,13 +6,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
-
 const app = express();
 const PORT = process.env.PORT || 8080;
+// const routes = require('./routes/api')
+const exerciseRoute = require('./routes/exercise.route');
+const config = require('./DB.js');
+require('dotenv').config();      
 
-const routes = require('./routes/api')
-
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/gainzodb', {
+mongoose.connect(process.env.MONGODB_URI || config.DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -23,10 +24,11 @@ mongoose.connection.on('connected', () => {
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
+app.use(morgan('tiny'));
 
 // HTTP request logger
-app.use(morgan('tiny'));
-app.use('/api', routes)
+// app.use('/api', routes)
+app.use('/exercise', exerciseRoute);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
